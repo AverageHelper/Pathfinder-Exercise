@@ -84,7 +84,7 @@ void parse_instruction(std::string temp, std::ofstream &ofs, Pathfinder* aptr) {
 			ofs << temp << "\n" << aptr->toString() << "\nPath: Unsolvable\n";
 		}
 		else {
-			ofs << temp << "\n" << aptr->toString() << std::endl << is_valid_path(pathVec, aptr->toString()) << std::endl; //<< ":\n" << ss.str() << std::endl;
+			ofs << temp << "\n" << aptr->toString() << std::endl << is_valid_path(pathVec, aptr->toString()) << std::endl; // << ":\n" << ss.str() << std::endl;
 		}
 	}
 	else if (command == "solveMaze") { // command to solve the maze and return a correct path if possible
