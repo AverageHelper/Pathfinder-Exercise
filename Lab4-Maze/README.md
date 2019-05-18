@@ -1,4 +1,4 @@
-# Lab 4 – Maze
+# Lab4-Maze
 Exploring a 3D maze
 
 ## Purpose
