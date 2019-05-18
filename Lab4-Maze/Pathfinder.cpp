@@ -39,13 +39,18 @@ string stringFromMaze(const map<pair<int, int>, vector<int>> &maze) {
     return mazeString;
 }
 
-map<pair<int, int>, vector<int>> fullMap() {
-    map<pair<int, int>, vector<int>> result;
+Pathfinder::Pathfinder() {
+    // Initialize currentMaze to all 1's
+    this->currentMaze = mazeWithRows({ 1, 1, 1, 1, 1 });
+}
+
+map<pair<int, int>, vector<int>> Pathfinder::mazeWithRows(vector<int> rowModel) {
+    map<pair<int, int>, vector<int>> newMaze;
     pair<int, int> planeRow = make_pair(0, 0);
     
     for (int row = 0; row < ROW_COUNT; row++) {
         for (int plane = 0; plane < COLUMN_COUNT; plane++) {
-            result[planeRow] = { 1, 1, 1, 1, 1 };
+            newMaze[planeRow] = rowModel;
             
             if (plane < COLUMN_COUNT - 1) {
                 planeRow.second += 1;
@@ -58,14 +63,10 @@ map<pair<int, int>, vector<int>> fullMap() {
         }
     }
     
-    return result;
+    return newMaze;
 }
 
 string Pathfinder::toString() const {
-    if (currentMaze.empty()) {
-        return stringFromMaze(fullMap());
-    }
-    
     return stringFromMaze(currentMaze);
 }
 
@@ -81,16 +82,18 @@ bool Pathfinder::importMaze(string file_name) {
         return false;
     }
     
-    cout << "Importing maze from " << file_name << endl;
+//    cout << "Importing maze from " << file_name << endl;
     
+    int nodeCount = 0;
     map<pair<int, int>, vector<int>> fileMaze;
     
-    int pathNode = false;
+    bool pathNode = false;
     pair<int, int> planeRow = make_pair(0, 0);
     
     while (!fileStream.bad() && !fileStream.fail() && !fileStream.eof()) {
         fileStream >> pathNode;
         fileMaze[planeRow].push_back(pathNode);
+        nodeCount += 1;
         
 //        cout << "Set " << pathNode << " to x " << fileMaze[planeRow].size() - 1;
 //        cout << ", y " << planeRow.second;
@@ -112,7 +115,12 @@ bool Pathfinder::importMaze(string file_name) {
         }
     }
     
-    if (fileStream.bad() || fileStream.fail()) {
+    if (fileStream.bad() ||
+        fileStream.fail() ||
+        nodeCount != COLUMN_COUNT * ROW_COUNT * PLANE_COUNT ||
+        fileMaze[make_pair(0, 0)].at(0) != 1 ||
+        fileMaze[make_pair(PLANE_COUNT - 1, ROW_COUNT - 1)].at(COLUMN_COUNT - 1) != 1) {
+        
         fileStream.close();
         return false;
     }

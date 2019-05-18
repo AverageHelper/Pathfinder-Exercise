@@ -8,6 +8,8 @@
 
 class Pathfinder: public PathfinderInterface {
 public:
+    Pathfinder();
+    
     /**
      * toString
      *
@@ -78,6 +80,7 @@ public:
 private:
     /// A representation of maze data. Each key identifies a column and a plane.
     map<pair<int, int>, vector<int>> currentMaze;
+    map<pair<int, int>, vector<int>> mazeWithRows(vector<int> rowModel);
 };
 
 #endif /* Pathfinder_h */
