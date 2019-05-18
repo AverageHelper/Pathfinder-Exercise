@@ -147,17 +147,17 @@
 		85A652BD228FB9180028AFCC /* Mazes */ = {
 			isa = PBXGroup;
 			children = (
-				85A652BE228FB9180028AFCC /* Invalid2.txt */,
-				85A652BF228FB9180028AFCC /* Unsolvable1.txt */,
-				85A652C0228FB9180028AFCC /* Invalid3.txt */,
 				85A652C1228FB9180028AFCC /* Invalid1.txt */,
-				85A652C2228FB9180028AFCC /* Unsolvable2.txt */,
-				85A652C3228FB9180028AFCC /* Unsolvable3.txt */,
+				85A652BE228FB9180028AFCC /* Invalid2.txt */,
+				85A652C0228FB9180028AFCC /* Invalid3.txt */,
 				85A652C4228FB9180028AFCC /* Invalid4.txt */,
 				85A652C5228FB9180028AFCC /* Invalid5.txt */,
+				85A652BF228FB9180028AFCC /* Unsolvable1.txt */,
+				85A652C2228FB9180028AFCC /* Unsolvable2.txt */,
+				85A652C3228FB9180028AFCC /* Unsolvable3.txt */,
+				85A652C8228FB9180028AFCC /* Solvable1.txt */,
 				85A652C6228FB9180028AFCC /* Solvable2.txt */,
 				85A652C7228FB9180028AFCC /* Solvable3.txt */,
-				85A652C8228FB9180028AFCC /* Solvable1.txt */,
 			);
 			name = Mazes;
 			sourceTree = "<group>";

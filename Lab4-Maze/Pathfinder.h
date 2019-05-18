@@ -2,12 +2,12 @@
 #define Pathfinder_h
 
 #include <iostream>
+#include <fstream>
+#include <map>
 #include "PathfinderInterface.h"
 
 class Pathfinder: public PathfinderInterface {
 public:
-    ~Pathfinder();
-    
     /**
      * toString
      *
@@ -74,6 +74,10 @@ public:
      *                A solution to the current maze, or an empty vector if none exists
      */
     vector<string> solveMaze();
+    
+private:
+    /// A representation of maze data. Each key identifies a column and a plane.
+    map<pair<int, int>, vector<int>> currentMaze;
 };
 
 #endif /* Pathfinder_h */
