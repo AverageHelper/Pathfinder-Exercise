@@ -1,8 +1,15 @@
 #include "Pathfinder.h"
 
+/// The total count of valid x coordinate spaces.
 const int COLUMN_COUNT = 5;
+
+/// The total count of valid y coordinate spaces.
 const int ROW_COUNT = 5;
+
+/// The total count of valid z coordinate spaces.
 const int PLANE_COUNT = 5;
+
+
 
 Pathfinder::Pathfinder() {
     // Initialize currentMaze to all 1's
@@ -20,8 +27,18 @@ Pathfinder::Pathfinder() {
     }
     
     this->currentMaze = newMaze;
+    
+    // Initialize randomizer
+    srand(static_cast<unsigned int>(time(NULL)));
 }
 
+
+Pathfinder::~Pathfinder() {
+    this->currentMaze.clear();
+}
+
+
+/// A helper function for debugging. Run from lldb to get a printout of maze data.
 void printMaze(const vector<vector<vector<int>>> &input) {
     for (int z = 0; z < PLANE_COUNT; z++) {
         for (int y = 0; y < ROW_COUNT; y++) {
@@ -78,9 +95,26 @@ string Pathfinder::toString() const {
     return mazeString;
 }
 
+
 void Pathfinder::createRandomMaze() {
+    vector<vector<vector<int>>> newMaze;
     
+    for (int z = 0; z < COLUMN_COUNT; z++) {
+        for (int y = 0; y < ROW_COUNT; y++) {
+            for (int x = 0; x < PLANE_COUNT; x++) {
+                int randomVal = rand() % 2;
+                
+                // newMaze.at(z).at(y).at(x) = randomVal;
+                newMaze.push_back(vector<vector<int>>());
+                newMaze.at(z).push_back(vector<int>());
+                newMaze.at(z).at(y).push_back(randomVal);
+            }
+        }
+    }
+    
+    this->currentMaze = newMaze;
 }
+
 
 bool Pathfinder::importMaze(string file_name) {
     ifstream fileStream;
@@ -130,17 +164,22 @@ bool Pathfinder::importMaze(string file_name) {
     return true;
 }
 
-string Pathfinder::toString(const int x, const int y, const int z) {
+
+/// Returns a string representation of the given point in the form "(x, y, z)"
+string stringFromPoint(const int x, const int y, const int z) {
     return "(" + to_string(x) + ", " + to_string(y) + ", " + to_string(z) + ")";
 }
 
 
+/// Returns `true` if the given coordinate lies inside our defined maze bounds.
 bool pathIsInsideBounds(int x, int y, int z) {
     return (x >= 0 && x < COLUMN_COUNT &&
             y >= 0 && y < ROW_COUNT &&
             z >= 0 && z < PLANE_COUNT);
 }
 
+/// Returns `true` if the given coordinate lies inside our defined maze bounds, and is on
+///   a valid traversable path (i.e. not 0 or 2)
 bool pathIsValidInMaze(const vector<vector<vector<int>>> &maze, int x, int y, int z) {
     return (pathIsInsideBounds(x, y, z) &&
             maze.at(z).at(y).at(x) == 1);
@@ -161,18 +200,21 @@ vector<string> Pathfinder::solveMaze() {
         return vector<string>();
     }
     
-    // While we've not hit the end yet
+    // While we've not hit the end yet...
     while (x != COLUMN_COUNT - 1 ||
            y != ROW_COUNT - 1 ||
            z != PLANE_COUNT - 1) {
         
+        // Get coordinate from breadcrumbs
         coords = breadcrumbs.at(breadcrumbs.size() - 1);
         x = coords.at(0);
         y = coords.at(1);
         z = coords.at(2);
         
+        // Mark our territory.
         mazeCopy.at(z).at(y).at(x) = 2;
         
+        // Check adjacent blocks for a valid path. Leave breadcrumbs and go if we can.
         if (pathIsValidInMaze(mazeCopy, x, y - 1, z)) {
             // If top is valid
             breadcrumbs.push_back({ x, y - 1, z });
@@ -207,14 +249,14 @@ vector<string> Pathfinder::solveMaze() {
         }
     }
     
-    // We must have made it to the end. Be sure to tack that onto our crumb trail.
+    // If we're here, we must have made it to the end. Since that means we didn't drop a breadcrumb here yet, tack that on.
     breadcrumbs.push_back({ COLUMN_COUNT - 1, ROW_COUNT - 1, PLANE_COUNT - 1 });
     
-    // Get the breadcrumb strings from our valid path.
+    // Get the path strings from our valid path.
     vector<string> path;
     for (unsigned int i = 0; i < breadcrumbs.size(); i++) {
         vector<int> coords = breadcrumbs.at(i);
-        path.push_back(toString(coords.at(0), coords.at(1), coords.at(2)));
+        path.push_back(stringFromPoint(coords.at(0), coords.at(1), coords.at(2)));
     }
     
     return path;

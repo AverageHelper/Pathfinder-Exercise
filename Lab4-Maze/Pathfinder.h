@@ -3,12 +3,13 @@
 
 #include <iostream>
 #include <fstream>
-#include <map>
+#include <time.h>
 #include "PathfinderInterface.h"
 
 class Pathfinder: public PathfinderInterface {
 public:
     Pathfinder();
+    ~Pathfinder();
     
     /**
      * toString
@@ -81,9 +82,6 @@ private:
     /// A representation of maze data.
     /// `currentMaze.at(z).at(y).at(x);`
     vector<vector<vector<int>>> currentMaze;
-    
-    /// Returns a string representation of the given arguments: "(x, y, z)"
-    string toString(const int x, const int y, const int z);
 };
 
 #endif /* Pathfinder_h */
