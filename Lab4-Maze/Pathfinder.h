@@ -78,9 +78,12 @@ public:
     vector<string> solveMaze();
     
 private:
-    /// A representation of maze data. Each key identifies a column and a plane.
-    map<pair<int, int>, vector<int>> currentMaze;
-    map<pair<int, int>, vector<int>> mazeWithRows(vector<int> rowModel);
+    /// A representation of maze data.
+    /// `currentMaze.at(z).at(y).at(x);`
+    vector<vector<vector<int>>> currentMaze;
+    
+    /// Returns a string representation of the given arguments: "(x, y, z)"
+    string toString(const int x, const int y, const int z);
 };
 
 #endif /* Pathfinder_h */
